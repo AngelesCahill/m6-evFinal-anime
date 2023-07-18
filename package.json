@@ -1,7 +1,7 @@
 {
   "name": "m6-evfinal-anime",
   "version": "1.0.0",
-  "description": "",
+  "description": "1. Para obtener todo la información de la api: http://localhost:3000/api/animes",
   "main": "index.js",
   "type": "module",
   "scripts": {
