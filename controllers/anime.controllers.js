@@ -76,7 +76,7 @@ export const deleteAnime = async (req, res) => {
     res.status(500).json({ code: 500, message: "Error al cargar datos" });
   }
 };
-//Actualizar un objeto de la api 
+//Actualizar nombre y genero de propiedad 1 de la api 
 //http://localhost:4000/api/animes/update/1?nombre=ACTUALIZADO&autor=ACTUALIZADO
   export const updateAnime = async (req, res) => {
     try {
@@ -115,44 +115,37 @@ export const deleteAnime = async (req, res) => {
     res.end();
   };
 
-//Crear un objeto a la api
-//http://localhost:4000/api/animes/create?nombre=angel&genero=maho&anio=1979&autor=shiro
+//Crear un objeto en la api
+//http://localhost:4000/api/animes?nombre=angel&genero=maho&anio=1979&autor=shiro
 export const createAnime = async (req, res) => {
-      try {
-        const nombre = req.query.nombre;
-        const genero = req.query.genero;
-        const anio = req.query.anio;
-        const autor = req.query.autor;
-        const newAnime = {
-          nombre,
-          genero,
-          anio,
-          autor,
-          creado: true
-        };
-        const data = await fs.readFile(pathAnimes, "utf8");
-        data = JSON.parse(data);
-        //let ultimoId = Object.keys(data)
-        //let last = ultimoId[ultimoId.length - 1]
-        //let id = (last +1).toString;
-        let id = "7";
-        newAnime = data[id];
-        console.log(data[id])
-        if (creado) {
-          await fs.writeFile(pathAnimes, JSON.stringify(data), "utf8");
-          res.status(201).json(data);
-        } else {
-          res.status(404).json({
-            status: "OK",
-            message: "No fue posible crear el nuevo animé",
-          });
-        }
-        
-      } catch (error) {
-        console.log(error);
-        res.status(500).send(error.message);
-      }
-      res.end();
+  try {
+    let { nombre, genero, anio, autor } = req.body;
+    let newAnime = {
+      nombre,
+      genero,
+      anio,
+      autor
+    };
+    let data = await fs.readFile(pathAnimes, "utf8");
+    data = JSON.parse(data);
+    let val = Object.keys(data);
+    let val1 = val.pop(val);
+    let val2 = parseInt(val1);
+    let val3 = val2 + 1;
+    let val4 = val3.toString();
+    let id = val4;
+    data[id] = newAnime;
+    await fs.writeFile(pathAnimes, JSON.stringify(data), "utf8");
+    res.status(200).json({
+      code: OK,
+      message: 'El nuevo animó se ha creado exitosamente',
+      data: data
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+  
 };
 
 
